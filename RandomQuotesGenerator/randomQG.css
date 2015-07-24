@@ -1,0 +1,144 @@
+html,
+body {
+  /*make image cover entire window*/
+  background: url("http://i358.photobucket.com/albums/oo27/picturesqueworlds/trees5_zpstzgnwonj.jpg") no-repeat center center fixed;
+  height: 100%;
+  width: 100%;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  font-family: 'Libre Baskerville', serif;
+  color: black;
+}
+
+.titleAndTwitterContainer {
+  text-align: center;
+}
+/*Twitter*/
+
+#twitterButton {
+  display: inline-block;
+  color: #50E8E2;
+  text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3), 0 -0.5px 3px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+  text-align: center;
+  line-height: 60px;
+  text-shadow: 2px 4px 3px rgba(0, 0, 0, 1), 0 -0.5px 3px rgba(0, 0, 0, 0.9);
+  color: white;
+  display: inline-block;
+}
+
+.welcomeQContainer {
+  position: relative;
+  margin-top: 40px;
+}
+
+h3::before {
+  position: absolute;
+  content: open-quote;
+  color: grey;
+  opacity: 0.3;
+  font-size: 190px;
+  font-family: 'Times New Roman', serif;
+  font-style: italic;
+  margin-left: -120px;
+}
+
+h3::after {
+  position: absolute;
+  content: close-quote;
+  color: grey;
+  opacity: 0.3;
+  font-size: 190px;
+  font-family: 'Times New Roman', serif;
+  font-style: italic;
+  margin-top: 35px;
+  margin-left: 10px;
+}
+
+h3 {
+  line-height: 50px;
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
+h3,
+h4 {
+  text-align: center;
+  padding-right: 30px;
+  padding-left: 30px;
+}
+
+h4 {
+  text-align: right;
+  margin-right: 175px;
+  margin-top: 20px;
+}
+
+h4::before {
+  content: "\2014 \2009";
+}
+
+.buttonShell {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  height: 50px;
+  width: 100px;
+  background-color: rgba(2555, 255, 255, 0.6);
+  text-align: center;
+  border-radius: 10%;
+  box-shadow: 0px 9px 6px 1px rgba(0, 0, 0, 0.3), 0 6px 3px rgba(0, 0, 0, 0.7), inset 0px 0px 6px 3px rgba(0, 0, 0, 0.7), 0 -1.5px 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid white;
+}
+
+.buttonContainer .button {
+  outline: none;
+  margin-top: auto;
+  margin-bottom: auto;
+  text-decoration: none;
+  color: black;
+  line-height: 50px;
+  /*has to be equal to height of its container to center*/;
+}
+
+.messageContainer {
+  text-align: center;
+  margin: auto;
+  margin-top: 140px;
+}
+
+#message {
+  font-size: 30px;
+  color: white;
+  text-shadow: 2px 4px 3px rgba(0, 0, 0, 1), 0 -0.5px 3px rgba(0, 0, 0, 0.9);
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: auto;
+  margin-top: 30px;
+  resize: none;
+  box-sizing: border-box;
+  -moz-box-sizing: border-bbox;
+  -webkit-box-sizing: border-box;
+  border: 2px solid white;
+  -moz-border: 2px solid white;
+  -webkit-border: 2px solid white;
+  border-radius: 40px;
+  -moz-border-radius: 40px;
+  -webkit-border-radius: 40px;
+  padding: 30px;
+  box-shadow: 0px 9px 12px 1px rgba(0, 0, 0, 0.4), 0 10px 3px rgba(0, 0, 0, 0.1), inset 0px 0px 6px 3px rgba(0, 0, 0, 0.1), 0 -0.5px 3px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0px 9px 12px 1px rgba(0, 0, 0, 0.4), 0 10px 3px rgba(0, 0, 0, 0.1), inset 0px 0px 6px 3px rgba(0, 0, 0, 0.1), 0 -0.5px 3px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0px 9px 12px 1px rgba(0, 0, 0, 0.4), 0 10px 3px rgba(0, 0, 0, 0.1), inset 0px 0px 6px 3px rgba(0, 0, 0, 0.1), 0 -0.5px 3px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  visibility: hidden;
+  min-height: 170px;
+}
+
+#author {
+  font-style: italic;
+  font-size: 20px;
+}
