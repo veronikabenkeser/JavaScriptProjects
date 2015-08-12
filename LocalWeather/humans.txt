@@ -1,0 +1,9 @@
+Project Name: Local Weather - Free Code Camp Zipline Project (http://www.freecodecamp.com/)
+
+APIs : 
+    JSON API - Weather Data - http://www.worldweatheronline.com/api/
+
+OTHER RESOURCES:
+    IP Locator - http://www.ipaddresslocation.org
+    Weather Icons - http://findicons.com/        
+    Pictures - https://stocksnap.io/
