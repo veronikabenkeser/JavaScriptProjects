@@ -44,6 +44,175 @@ function ScriptLoader() {
   };
 }
 
+/*filesToLoad.forEach(function(url){
+    console.log('h');
+    loadScript(url).then(function(value) {
+	// Resolved
+	console.log('Script loaded from:', value);
+}, function(value) {
+	// Rejected
+	console.log('Script not found:', value);
+});
+  });
+  
+  function loadScript(url){
+  
+    	return new Promise(function(resolve, reject){
+      var script = document.createElement('script');
+      script.scr = url;
+      //Call resolve when it's loaded
+      script.addEventListener('load', function(){
+        resolve(url);
+        console.log('res');
+      }, false);
+      //Reject the promise if there's an error
+      script.addEventListener('error', function(){
+        reject(url);
+        console.log('rej');
+      }, false);
+      
+      document.body.appendChild(script);
+    });
+    	
+  }*/
+
+/*
+  var loader = new ScriptLoader();
+  filesToLoad.forEach(function(file) {
+    loader.add(file);
+  });
+*/
+/*loader.loaded(function(returnedArrayOfResults){
+ console.log("WORKED"); 
+  console.log(returnedArrayOfResults);
+    initializeThisFile();
+}, function(err) { 
+  console.log("DID NOT WORK"); 
+    console.log(err);
+    console.log("This link did not load " + err.src); 
+   });*/
+/*loader.loaded(function(result1) {
+	console.log('Loaded!');
+  }, function(result2){
+    console.log("finally");
+  });*/
+/*loader.loaded(function(failedCallbackF) {
+  console.log("Error.");
+  //Try getting the files again??
+  filesToLoad.forEach(function(file) {
+  loader.add(file);
+});
+  loader.loaded(function(failedCallbackF){
+    console.log("Failed again");
+  });
+});*/
+
+/* var promises = [];
+  filesToLoad.forEach(function(file) {
+    var promise = new Promise(function(resolve, reject) {
+
+      var script = document.createElement('script');
+      script.src = file;
+
+      script.addEventListener('load', function() {
+        resolve(script);
+      }, false);
+
+      script.addEventListener('error', function() {
+        reject(script);
+        console.log("script at " + file + " rejected");
+        //Try reloading the external file until it loads
+       
+      }, false);
+
+      document.body.appendChild(script);
+    });
+
+    promises.push(promise);
+  });
+
+  Promise.all(promises).then(function(arrayOfResults) {
+    console.log("done!");
+    initializeThisFile();
+  }, function(err) {
+  console.log(err); // Error: "It broke");
+  }
+);*/
+
+/*function ScriptLoader() {
+  var promises = [];
+
+  this.add = function(url) {
+    var promise = new Promise(function(resolve, reject) {
+
+      var script = document.createElement('script');
+      script.src = url;
+
+      script.addEventListener('load', function() {
+        resolve(script);
+      }, false);
+
+      script.addEventListener('error', function() {
+        reject(script);
+     
+        console.log('was rej');
+      }, false);
+
+      document.body.appendChild(script);
+    });
+
+    promises.push(promise);
+  };
+*/
+/*	this.loaded = function(callback) {
+		Promise.all(promises).then(callback);
+	};*/
+
+/*  this.loaded = function(arrayOfResults){ Promise.all(promises).then(function(arrayOfResults) {
+    console.log("done!");
+    console.log(arrayOfResults);
+    initializeThisFile();
+  }, function(err) {
+  console.log("This link did not load " + err.src); 
+    return err.src;
+  }
+);
+ }*/
+/*this.loaded = function(callbackF){
+  console.log("ab");
+  Promise.all(promises).then(function(){
+    console.log("eher");
+  });};*/
+/*  this.loaded = function(cb){Promise.all(promises).then(function(value) {
+	// Resolved
+	console.log('Script loaded from:::', value);
+    return "";
+}, function(value) {
+	// Rejected
+	console.error('Script not found:::', value)
+  return value;
+});
+};*/
+/*loader.loaded(function(returned){
+  console.log("what has been returned "+ returned);
+})*/
+/* this.loaded = function(callbackOnFailed) {*/
+/*Promise.all(promises).then(callback1).catch(function(callback2){
+    console.log("caught");  
+  });*/
+/* Promise.all(promises).then(function(result1) {
+     // Resolved
+     console.log('Script loaded from:', result1);
+
+   }, callbackOnFailed*/
+/*function(failedScript) {
+	// Rejected
+	console.error('Script not found:', failedScript.src);
+        callbackOnFailed;*/
+/* );
+  };
+}*/
+
 function initializeThisFile() {
   var slidesTitleMap = {
     0: "MareNostrum",
@@ -69,14 +238,16 @@ function initializeThisFile() {
   //Initialize concept map
   $('#cy').cytoscape({
     container: document.getElementById('cy'),
-    style: 'node { shape: rhomboid;  width: 120px; height:120px; text-valign: top; color: black; font-size: 20px; text-wrap: wrap; text-max-width: 200px;  font-weight: bold;  background-fit: cover; background-color: #FFF6A5; background-opacity:0.5; border-color: #E8D6A5; border-width: 2px; border-opacity: 1; } edge { width: 6; target-arrow-shape: triangle; line-color: #3B7F41; target-arrow-color: #3B7F41; } .transfClass{color:red;}',
+    style: 'node { shape: roundrectangle;  width: 60px; height:60px; text-valign: top; color: black; font-size: 12px; text-wrap: wrap; text-max-width: 60px;  font-weight: bold;  background-fit: cover; background-color: #FFF6A5; background-opacity:0.5; border-color: #E8D6A5; border-width: 2px; border-opacity: 1; } edge { width: 6; target-arrow-shape: triangle; line-color: #3B7F41; target-arrow-color: #3B7F41; } .transfClass{color:red;}',
     ready: function() {
+      console.log("this " + this);
       window.cy = this;
       cy.on('tapdragover', 'node', function(evt) {
         this.css({
           "content": "_ "
         });
         var descr = this.data().description;
+        console.log("desc hjere" + descr);
         this.addClass('transfClass');
         this.css({
           "text-max-width": "190px",
@@ -131,7 +302,16 @@ function initializeThisFile() {
   //Random button
   $("#rand-button").click(function() {
 
-    /*scrollToElement('#cy', 600);*/
+    $("#cy").css("height", window.innerHeight - 20);
+
+    //Scroll to section
+    $('html, body').stop().animate({
+
+      scrollTop: $("#cy").offset().top
+
+    }, "slow");
+
+    //Generate graph
     generateRandomGraph();
   });
 }
@@ -140,6 +320,8 @@ function initializeThisFile() {
 function assignObserver(target, config, slidesTitleMap) {
   var i = 1;
   var observer = new MutationObserver(function(mutations) {
+    console.log(mutations);
+    console.log("i" + i);
     if (i % 2 === 0) {
       clearInterval(interval2);
       //Empty the text field
@@ -160,6 +342,8 @@ function addTextToSlides(slidesTitleMap) {
 
   //Show blinker
   var $cursorObj = $obj.find('.cursor');
+  console.log("cu");
+  console.log($cursorObj);
   interval2 = window.setInterval(function() {
     cursorAnimation($cursorObj);
   }, 900);
@@ -230,6 +414,8 @@ function generateTermWithLinks() {
     var randomTermObj = data;
     if (wikiPageHasInfo(data.query.pages[0]) && data.query.pages[0].links) {
       var comboSearchTitle = generatedTitleCombo(data.query.pages[0].links);
+      console.log("random title: " + randomTermObj.query.pages[0].title);
+      console.log("combosearch " + comboSearchTitle);
       findAndMapSubterms(comboSearchTitle, randomTermObj, 3, countNodesCallback);
 
     } else {
@@ -266,21 +452,24 @@ function generatedTitleCombo(links) {
 }
 
 function getSubpagesOfSubpages(subnodes, parent) {
+  console.log("inside of getsubpagesofSubpages");
   //Go through some of the links of the subpages, get their info (inluding links, thumnail, etc) and draw the sublinks linked to their parent
   subnodes.forEach(function(subnode) {
     if (cy && cy.nodes().size < 14 && subnode.data.links !== "") {
-      //Go through each of the links and draw that link's thumbnail, get links, etc.
+      //go through each of the links and draw that link's thumbnail, get links, etc.
       var linksArr = subnode.data.links;
       linksArr.forEach(function(linkObj) {
+        console.log("GOGO");
+        // findAndMapSubterms(linkObj.title, subnode, 2);
       });
     }
   });
-  //The number of drawn subnodes is still less than 14.
-  console.log("The total number of nodes is still less than 14. Num of nodes : " + cy.nodes().size);
+  //if the number of drawn subnodes is still less than 14,
+  console.log("the total number of nodes is still less than 14. Num of nodes : " + cy.nodes().size);
 }
 
 function conductSearch(searchTerm) {
-  console.log("Inside of the conductSearch function");
+  console.log("inside of the conductSearch function");
 }
 
 function findAndMapSubterms(searchTerm, parentTermObj, numToFind, callbackF) {
@@ -288,6 +477,7 @@ function findAndMapSubterms(searchTerm, parentTermObj, numToFind, callbackF) {
     callbackF = "";
   }
 
+  console.log("inside findAndMapSubTerms!!");
   var parentNode;
   var nodes;
 
@@ -309,19 +499,27 @@ function findAndMapSubterms(searchTerm, parentTermObj, numToFind, callbackF) {
   getData(parameters).done(function(data, textStatus, xhr) {
     var nodes = makeNodes(data, textStatus, xhr);
     var parentNode;
+    /*console.log("nodes are " + nodes);
+    console.log("parentTermObj " + parentTermObj);
+    console.log("parentTermObj[0] " + parentTermObj[0]);*/
     if (typeof parentTermObj.query !== 'undefined') { //not a cytoscape obj yet
       parentNode = makeNodes(parentTermObj)[0];
 
     } else { //is a cytoscape obj yet
       parentNode = parentTermObj; //the parent is already a node
+      console.log("the parent is already a node");
+      console.log("PARENT NODE IS0 " + parentNode.data.name);
     }
+    console.log("parent here1 " + parentNode);
 
     //If there was at least one child node drawn and there is an exisiting parent node, then connect all of the child nodes to the parent. If not, do another random search.
     if (nodes && parentNode) {
       makeEdges(nodes, parentNode);
     } else {
+      console.log("FOUND NONEXISTENT PAGES. DOING ANOTHER RANDOM SEARCH.");
       generateTermWithLinks();
     }
+    console.log("current count of nodes: " + cy.nodes().size());
 
     if (typeof callbackF === "function") {
       console.log("in the callbackF now");
@@ -336,6 +534,10 @@ function findAndMapSubterms(searchTerm, parentTermObj, numToFind, callbackF) {
 function makeEdges(nodes, parentTerm) {
   //parentTerm var is a cytoscape obj
   for (var i = 0; i < nodes.length; i++) {
+    /*if (i !== original) {*/
+    console.log("cytoscape obj " + typeof parentTerm.query === 'undefined');
+    console.log("parentTerm.query -- > should be undefined! " + parentTerm.query);
+
     edge = {
       group: "edges",
       data: {
@@ -343,11 +545,16 @@ function makeEdges(nodes, parentTerm) {
         target: nodes[i].data.id
       }
     };
+
+    console.log("finished adding edge");
     cy.add(edge);
   }
 }
 
 function makeNodes(data, textStatus, xhr) {
+  console.log("in make nodes");
+  console.log("data " + data);
+  console.log(data.query);
   var data = data.query.pages;
   var title;
   var url;
@@ -412,7 +619,11 @@ function makeNodes(data, textStatus, xhr) {
       //Check for repeats
 
       cy.nodes().forEach(function(ele) {
+        console.log("checking for doubles:");
+        console.log("ele.data('name').toLowerCase() : " + ele.data().name.toLowerCase());
+        console.log("node.data.name.toLowerCase()  " + node.data.name.toLowerCase());
         if (ele.data('name').toLowerCase() === node.data.name.toLowerCase()) {
+          console.log("repeat found !! The repeat ele's id is " + node.data.id);
           needToAdd = false;
         }
       });
@@ -421,6 +632,7 @@ function makeNodes(data, textStatus, xhr) {
         results.push(node);
 
         cy.add(node);
+        console.log("just added to cy");
       }
       tempPos += 100;
     }
@@ -438,7 +650,7 @@ function labelNodes(nodes) {
       /*"text-max-width": labW*/
     });
   });
-
+  console.log("nodes lab");
 }
 
 function populateAllImages(nodes) {
@@ -448,16 +660,25 @@ function populateAllImages(nodes) {
   nodes.forEach(function(node) {
     if (node.data('thumbnail') !== "") {
       var pic = node.data('thumbnail');
+      console.log("this node : " + node.data('name') + " belongs to this link: " + pic);
 
       imageExists(pic, function(pic, result) {
         if (result === "success") {
+          console.log("WIKI IMAGE IS WORKING for thing " + node.data('name') + "Image: " + pic);
+          console.log("thisNode " + node);
+          console.log("name:" + node.data('name'));
           node.css('background-image', pic);
         } else {
+          console.log("WIKI ISNT WORKING. TRYING TO ADD A GOOGLE IMAGE TO " + node.data('name'));
           addGoogleImage(node.data('name'), node);
         }
 
       });
     } else {
+
+      console.log("DIDNT TRY ANY WIKI IMAGE LINKS BECAUSE NONE WERE FOUND. TRYING TO ADD A GOOGLE IMAGE");
+      console.log("thisObj" + node);
+      console.log("this obj name " + node.data('name'));
       addGoogleImage(node.data('name'), node);
     }
 
@@ -465,6 +686,7 @@ function populateAllImages(nodes) {
 }
 
 function addGoogleImage(searchTerm, imageReceiver) {
+  console.log("in add google image");
   var pic;
   var imageSearch;
   // Create an Image Search instance.
@@ -484,31 +706,40 @@ function addGoogleImage(searchTerm, imageReceiver) {
   google.search.Search.getBranding('branding');
 
   function searchComplete() {
+    console.log("finished google search");
     // Check that we got rfesults
     if (imageSearch.results && imageSearch.results.length > 0) {
       //  check that image is available
       var q = 0;
+      console.log("found " + imageSearch.results.length + " possible google images");
 
       function cb(url, result) {
         if (result === "success") {
+          console.log("GOOGLE IMAGE IS WORKING");
           imageReceiver.css('background-image', url);
+          console.log("JUST SET GOOGLE IMAGE. BREAKOUT .node name is " + imageReceiver.data('name'));
 
         } else {
           if (q < imageSearch.results.length - 1) {
             q++;
             var k = imageSearch.results;
+            console.log("GOOGLE IMAGE DID NOT WORK. TRYING ANOTHER SEARCH. total num of links : " + imageSearch.results.length + "links in an array: " + imageSearch.results);
             imageExists(imageSearch.results[q].url, cb);
           } else {
-            console.log("No more google results. Out of imageSearch.results.length :" + imageSearch.results.length);
+            console.log("no more google results. Out of imageSearch.results.length :" + imageSearch.results.length);
           }
         }
       }
+
       imageExists(imageSearch.results[q].url, cb);
+
     }
   }
 }
 
+///function testImage(url, callback, timeout) {
 function imageExists(url, callback, timeout) {
+  console.log("link test " + url);
   timeout = timeout || 5000;
   var timedOut = false,
     timer;
@@ -516,18 +747,21 @@ function imageExists(url, callback, timeout) {
   img.onerror = img.onabort = function() {
     if (!timedOut) {
       clearTimeout(timer);
+      console.log("think link failed : " + url);
       callback(url, "error");
     }
   };
   img.onload = function() {
     if (!timedOut) {
       clearTimeout(timer);
+      console.log("think link suc : " + url);
       callback(url, "success");
     }
   };
   img.src = url;
   timer = setTimeout(function() {
     timedOut = true;
+    console.log("think link timed out : " + url);
     callback(url, "timeout");
   }, timeout);
 
@@ -567,7 +801,7 @@ function countNodesCallback(numOfNodes, nodesArr) {
       populateAllImages(nodes);
       labelNodes(nodes);
       drawToScale();
-      console.log("Don't need to run again.");
+      console.log("DONT NEED TO RUN AGAIN");
     }
 
   } else {
@@ -589,7 +823,7 @@ function drawToScale() {
     ungrabifyWhileSimulating: false, // so you can't drag nodes during layout
 
     /*fit: true,*/ // on every layout reposition of nodes, fit the viewport
-    padding: 0, // padding around the simulation
+    padding: 1, // padding around the simulation
     boundingBox: undefined, // constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
 
     // layout event callbacks
@@ -601,7 +835,7 @@ function drawToScale() {
     avoidOverlap: true, // if true, prevents overlap of node bounding boxes
     handleDisconnected: true, // if true, avoids disconnected components from overlapping
     nodeSpacing: function(node) {
-      return 30;
+      return 15;
     }, // extra spacing around nodes
     flow: undefined, // use DAG/tree flow layout if specified, e.g. { axis: 'y', minSeparation: 30 }
     alignment: undefined, // relative alignment constraints on nodes, e.g. function( node ){ return { x: 0, y: 1 } }
