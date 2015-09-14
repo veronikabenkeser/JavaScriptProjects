@@ -8,6 +8,47 @@ var failedRequestObj2 = {
     "batchcomplete": true
 };
 
+var options = {
+    name: 'cola',
+
+    animate: true, // whether to show the layout as it's running
+    refresh: 0.5, // number of ticks per frame; higher is faster but more jerky
+    maxSimulationTime: 6000, // max length in ms to run the layout
+    ungrabifyWhileSimulating: false, // so you can't drag nodes during layout
+
+    /*fit: true,*/ // on every layout reposition of nodes, fit the viewport
+    padding: 1, // padding around the simulation
+    boundingBox: undefined, // constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
+
+    // layout event callbacks
+    ready: function() {}, // on layoutready
+    stop: function() {}, // on layoutstop
+
+    // positioning options
+    randomize: true, // use random node positions at beginning of layout
+    avoidOverlap: true, // if true, prevents overlap of node bounding boxes
+    handleDisconnected: true, // if true, avoids disconnected components from overlapping
+    nodeSpacing: function(node) {
+        return 15;
+    }, // extra spacing around nodes
+    flow: undefined, // use DAG/tree flow layout if specified, e.g. { axis: 'y', minSeparation: 30 }
+    alignment: undefined, // relative alignment constraints on nodes, e.g. function( node ){ return { x: 0, y: 1 } }
+
+    // different methods of specifying edge length
+    // each can be a constant numerical value or a function like `function( edge ){ return 2; }`
+    edgeLength: undefined, // sets edge length directly in simulation
+    edgeSymDiffLength: undefined, // symmetric diff edge length in simulation
+    edgeJaccardLength: undefined, // jaccard edge length in simulation
+
+    // iterations of cola algorithm; uses default values on undefined
+    unconstrIter: undefined, // unconstrained initial layout iterations
+    userConstIter: undefined, // initial layout iterations with user-specified constraints
+    allConstIter: undefined, // initial layout iterations with all constraints including non-overlap
+
+    // infinite layout options
+    infinite: false // overrides all other options for a forces-all-the-time mode
+};
+
 $(document).ready(function() {
     //Load all external js files
     var filesToLoad = ["https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js", "https://cdnjs.cloudflare.com/ajax/libs/cytoscape/2.4.4/cytoscape.min.js", "http://marvl.infotech.monash.edu/webcola/cola.v3.min.js"];
@@ -120,7 +161,7 @@ function initializeThisFile() {
     });
 
     $(window).on('resize', function() {
-        drawToScale();
+        drawToScale(options);
     });
 
     //Initialize google images 
@@ -133,22 +174,22 @@ function initializeThisFile() {
     }
 
     //Seach box 
-    $("#search").click(function() {
-        findConcept();
+    $("#search .icon-container").click(function() {
+        evaluateSearch();
+    });
+
+    //Search on enter
+    $(".searchDiv").keyup(function(event) {
+        if (event.keyCode == 13) {
+
+            evaluateSearch();
+        }
     });
 
     //Random button
     $("#rand-button").click(function() {
 
-        $("#cy").css("height", window.innerHeight - 20);
-
-        //Scroll to section
-        $('html, body').stop().animate({
-
-            scrollTop: $("#cy").offset().top
-
-        }, "slow");
-
+        moveDown();
         //Generate graph
         generateRandomGraph();
     });
@@ -608,7 +649,7 @@ function countNodesCallback(numOfNodes, nodesArr) {
             var nodes = cy.nodes();
             populateAllImages(nodes);
             labelNodes(nodes);
-            drawToScale();
+            drawToScale(options);
             console.log("DONT NEED TO RUN AGAIN");
         }
 
@@ -618,50 +659,9 @@ function countNodesCallback(numOfNodes, nodesArr) {
     }
 }
 
-function drawToScale() {
+function drawToScale(options) {
     var boundingH = window.innerWidth - 10;
     var boundingW = window.innerHeight - 10;
-
-    var options = {
-        name: 'cola',
-
-        animate: true, // whether to show the layout as it's running
-        refresh: 0.5, // number of ticks per frame; higher is faster but more jerky
-        maxSimulationTime: 6000, // max length in ms to run the layout
-        ungrabifyWhileSimulating: false, // so you can't drag nodes during layout
-
-        /*fit: true,*/ // on every layout reposition of nodes, fit the viewport
-        padding: 1, // padding around the simulation
-        boundingBox: undefined, // constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
-
-        // layout event callbacks
-        ready: function() {}, // on layoutready
-        stop: function() {}, // on layoutstop
-
-        // positioning options
-        randomize: true, // use random node positions at beginning of layout
-        avoidOverlap: true, // if true, prevents overlap of node bounding boxes
-        handleDisconnected: true, // if true, avoids disconnected components from overlapping
-        nodeSpacing: function(node) {
-            return 15;
-        }, // extra spacing around nodes
-        flow: undefined, // use DAG/tree flow layout if specified, e.g. { axis: 'y', minSeparation: 30 }
-        alignment: undefined, // relative alignment constraints on nodes, e.g. function( node ){ return { x: 0, y: 1 } }
-
-        // different methods of specifying edge length
-        // each can be a constant numerical value or a function like `function( edge ){ return 2; }`
-        edgeLength: undefined, // sets edge length directly in simulation
-        edgeSymDiffLength: undefined, // symmetric diff edge length in simulation
-        edgeJaccardLength: undefined, // jaccard edge length in simulation
-
-        // iterations of cola algorithm; uses default values on undefined
-        unconstrIter: undefined, // unconstrained initial layout iterations
-        userConstIter: undefined, // initial layout iterations with user-specified constraints
-        allConstIter: undefined, // initial layout iterations with all constraints including non-overlap
-
-        // infinite layout options
-        infinite: false // overrides all other options for a forces-all-the-time mode
-    };
 
     cy.layout(options);
     window.cy.layout();
@@ -745,6 +745,7 @@ function attemptToGuessSearchTerm(typedSearchTerm) {
 
             $("#cy").append("Your search \"" + searchedText + "\" did not match any Wikipedia entries.");
         } else {
+
             showSearchBoxResults(data, textStatus, xhr, false);
         }
     });
@@ -760,9 +761,45 @@ function showSearchBoxResults(data, textStatus, xhr, showConnections) {
     nodes.splice(0, 1);
     if (showConnections) {
         makeEdges(nodes, parent);
+    } else {
+        increaseSizeOfIcons();
     }
     var existingNodes = cy.nodes();
     populateAllImages(existingNodes);
     labelNodes(existingNodes);
-    drawToScale();
+
+    drawToScale(options);
+}
+
+function moveDown() {
+
+    $("#cy").css("height", window.innerHeight - 20);
+
+    //Scroll to section
+    $('html, body').stop().animate({
+
+        scrollTop: $("#cy").offset().top
+
+    }, "slow");
+}
+
+
+
+function evaluateSearch() {
+    var searchTerm = $('#searchT').val();
+    if (searchTerm) {
+        moveDown();
+
+        findConcept();
+    }
+}
+
+function increaseSizeOfIcons() {
+
+    cy.nodes().css({
+        "text-max-width": "160px",
+        "height": "160px",
+        "width": "160px"
+    });
+
 }
