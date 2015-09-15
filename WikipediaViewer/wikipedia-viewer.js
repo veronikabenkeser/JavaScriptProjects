@@ -936,7 +936,7 @@ function wikiPageHasInfo(page) {
 }
 
 function findConcept(searchTerm) {
-  $("#errorM").empty();
+    $("#errorM").empty();
     if (cy !== 'undefined') {
         cy.nodes().remove();
         cy.edges().remove();
