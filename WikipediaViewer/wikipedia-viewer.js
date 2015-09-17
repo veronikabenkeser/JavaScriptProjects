@@ -83,10 +83,7 @@ function initializeThisFile() {
     //Initialize concept map
     $('#cy').cytoscape({
         container: document.getElementById('cy'),
-        style: 'node { shape: heptagon;  width: 60px; height:60px; text-valign: top; color: blac' +
-                'k; font-size: 10px; text-wrap: wrap; text-max-width: 90px; background-fit: cover' +
-                '; background-color: #FFF6A5; background-opacity:0.5; border-color: #E8D6A5; bord' +
-                'er-width: 2px; border-opacity: 1; } edge { width: 2; target-arrow-shape: triangl',
+        style: 'node { shape: heptagon;  width: 60px; height:60px; text-valign: top; color: black; font-size: 10px; text-wrap: wrap; text-max-width: 90px; background-fit: cover; background-color: #FFF6A5; background-opacity:0.5; border-color: #E8D6A5; border-width: 2px; border-opacity: 1; } edge { width: 2; target-arrow-shape: triangle; opacity: 0.6; line-color: #3B7F41; target-arrow-color: #3B7F41; }',
         maxZoom: 3,
         userPanningEnabled: false,
         boxSelectionEnabled: false,
