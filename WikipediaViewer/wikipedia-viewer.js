@@ -1,6 +1,7 @@
 //Global variables
 var interval2;
 var parameters;
+var scrollStartPos = 0;
 var failedRequestObj1 = {
     batchcomplete: true
 };
@@ -19,9 +20,11 @@ $(document).ready(function () {
         loader.add(url);
     });
     loader.loaded(function (returned) {
+        console.log('Loaded!');
         initializeThisFile();
         $(".loader").fadeOut("slow");
     });
+
 });
 
 function ScriptLoader() {
@@ -85,6 +88,9 @@ function initializeThisFile() {
                 '; background-color: #FFF6A5; background-opacity:0.5; border-color: #E8D6A5; bord' +
                 'er-width: 2px; border-opacity: 1; } edge { width: 2; target-arrow-shape: triangl',
         maxZoom: 3,
+        userPanningEnabled: false,
+        boxSelectionEnabled: false,
+
         ready: function () {
             window.cy = this;
             cy.on('tapdragover', 'node', function (evt) {
@@ -117,6 +123,16 @@ function initializeThisFile() {
                 });
 
                 this.removeClass('transfClass');
+
+            });
+
+            $(document).on('touchstart', '.container', function (event) {
+                scrollStartPos = event.originalEvent.touches[0].pageY;
+
+            });
+
+            $(document).on('touchmove', '.container', function (event) {
+                $('html,body').scrollTop($(window).scrollTop() + (scrollStartPos - event.originalEvent.touches[0].pageY));
 
             });
 
@@ -696,6 +712,7 @@ function drawToScale() {
     window.cy.layout();
     var bounds = cy.elements().boundingBox();
     $('#cy').css('height', bounds.h + 300);
+    /*cy.boxSelectionEnabled(false);*/
     cy.center();
     cy.resize();
 }
@@ -733,29 +750,8 @@ function findConcept(searchTerm) {
         " uselang": "en",
         "gsrsearch": searchTerm,
         "gsrnamespace": 0
-
     };
-
-    /*parameters = {
-       "action": "query",
-       "srsearch": searchTerm,
-
-       "list": "search",
-
-       "formatversion": 2,
-       "prop": "images|info|pageimages|pageterms|links",
-       "format": "json",
-       "inprop": "url",
-       "piprop": "thumbnail",
-       "pithumbsize": 200,
-       "pilimit": 10,
-       "pllimit": 10,
-       "wbptterms": "description",
-       "uselang": "en"
-     };*/
-
     populateSearchTermResults(parameters);
-
 }
 
 function populateSearchTermResults(parameters) {
@@ -780,6 +776,7 @@ function attemptToGuessSearchTerm(typedSearchTerm) {
         "exchars": 100,
         "explaintext": "",
         "format": "json",
+        "inprop": "url",
         "pilimit": 1,
         "wbptterms": "description",
         "generator": "allpages",
@@ -800,8 +797,7 @@ function attemptToGuessSearchTerm(typedSearchTerm) {
 
 function displayErrorMessage(searchedText) {
     $message = $('<div class= "errorM"></div>');
-    $message.append("Your search \"" + searchedText + "\" did not match any Wikipedia entries. Did you mean to search for any of the fo" +
-            "llowing?");
+    $message.append("Your search \"" + searchedText + "\" did not match any Wikipedia entries. Did you mean to search for any of the following?");
     $("#errorM").append($message);
 }
 
@@ -838,16 +834,13 @@ function evaluateSearch() {
     var searchTerm = $('#searchT').val();
     if (searchTerm) {
         moveDown();
-
         findConcept(searchTerm);
     }
 }
 
 function increaseSizeOfIcons() {
-
     cy.nodes().css({
         "text-max-width": "160px",
         "shape": "roundrectangle"
     });
-
 }
