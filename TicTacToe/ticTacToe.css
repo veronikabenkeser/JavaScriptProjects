@@ -1,0 +1,261 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Biryani', sans-serif;
+    background: url("http://i358.photobucket.com/albums/oo27/picturesqueworlds/cb2_zpsttazoggx.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    color: rgba(255, 255, 255, 0.5);
+    font-family: 'Gloria Hallelujah', cursive;
+    font-weight: 400;
+}
+h1 {
+    font-size: 68px;
+    text-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+    line-height: 40px;
+}
+.intro {
+    padding-top: 80px;
+}
+h2 {
+    font-size: 45px;
+    text-decoration: underline;
+    text-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+    line-height: 45px;
+}
+body {
+    text-align: center;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    display: flex;
+    flex-flow: column;
+    -webkit-flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    -webkit-flex-flow: row wrap;
+    justify-content: space-around;
+    align-content: center;
+    -webkit-align-items: center;
+}
+.all-content {
+    margin: auto;
+}
+.row {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row;
+    flex-flow: row;
+}
+.row > div {
+    width: 150px;
+    height: 150px;
+    line-height: 150px;
+    font-size: 50px;
+    font-family: 'Biryani', sans-serif;
+    font-weight: 900;
+    content: "CC";
+    cursor: default;
+}
+@media only screen and (max-device-width: 380px) {
+    .row > div {
+        width: 250px;
+        height: 250px;
+        line-height: 250px;
+        font-size: 100px;
+        font-family: 'Biryani', sans-serif;
+        font-weight: 900;
+        content: "CC";
+        cursor: default;
+    }
+}
+.row div:nth-child(2) {
+    border-left: 2px solid red;
+    border-right: 2px solid red;
+}
+.row:nth-child(1) {
+    border-bottom: 2px solid red;
+}
+.row:nth-child(3) {
+    border-top: 2px solid red;
+}
+.selection {
+    cursor: pointer;
+}
+.highlighted {
+    background-color: yellow !important;
+}
+.rules {
+    margin: auto;
+    color: rgba(255, 255, 255, 0.7);
+    text-align: left;
+    font-size: 20px;
+    font-weight: bold;
+    /* background-color: transparent;*/
+    /*box-shadow: 0 0 10px #000;*/
+}
+.settings {
+    position: relative;
+}
+.note-top {
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+    /* For IE8 and earlier */
+    
+    position: absolute;
+    background: url("http://api.thumbr.it/whitenoise-361x370.png?background=##e6df78&noise=626262&density=9&opacity=15");
+}
+.note-top.right {
+    height: 21px;
+    width: 90px;
+    margin-top: -20px;
+    margin-left: 25px;
+}
+.note-top.left {
+    height: 30px;
+    width: 100px;
+    margin-top: -190px;
+    margin-left: -48px !important;
+}
+.difficulty,
+.choice-bubble {
+    margin-top: 20px;
+    position: relative;
+    float: left;
+    width: 70%;
+    margin-left: 100px;
+    display: inline-block;
+    vertical-align: top;
+    height: 250px;
+    width: 250px;
+    border: 2px solid;
+    -moz-box-shadow: 5px 5px 7px rgba(33, 33, 33, 1);
+    -webkit-box-shadow: 5px 5px 7px rgba(33, 33, 33, .7);
+    box-shadow: 5px 5px 7px rgba(33, 33, 33, .7);
+    background: #fefabc;
+    color: black;
+    font-weight: bold;
+    font-family: "Reenie Beanie", arial, sans-serif;
+    font-size: 55px;
+    -moz-transform: rotate(-3deg);
+    -webkit-transform: rotate(-3deg);
+    -o-transform: rotate(-3deg);
+    -ms-transform: rotate(-3deg);
+    transform: rotate(-3deg);
+    -webkit-box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 5px 5px 7px black, 0px 0px 12px 0px black;
+}
+.difficulty {
+    -moz-transform: rotate(3deg);
+    -webkit-transform: rotate(3deg);
+    -o-transform: rotate(3deg);
+    -ms-transform: rotate(3deg);
+    transform: rotate(3deg);
+}
+.difficulty>div {
+    display: inline;
+    padding: 4px;
+}
+.choice-bubble>div,
+.choice-bubble>p {
+    display: inline;
+    padding: 10px;
+    font-size: 60px;
+    font-weight: bold;
+    line-height: 170px;
+}
+.fa-long-arrow-right {
+    font-size: 100px !important;
+    color: rgba(255, 255, 255, 0.9);
+    position: absolute;
+    margin-left: -20px;
+    -ms-transform: rotate(17deg);
+    -webkit-transform: rotate(17deg);
+    transform: rotate(7deg);
+    margin-top: 30px;
+    -webkit-animation: moveArrow 3s infinite;
+    -moz-animation: moveArrow 3s infinite;
+    -o-animation: moveArrow 3s infinite;
+    animation: moveArrow 3s infinite;
+}
+@keyframes moveArrow {
+    /* 0%   { opacity: 0.5; color:white}*/
+    /*  0% {left:-10px;}
+    25%   { opacity: 0.7; color:white;left:+10px;}
+    50% { opacity: 1; color:yellow;left:-10px;}
+  75%   { opacity: 1; color:red;left:+10px;}
+  100% { opacity: 1; color:white;left:-10px;}*/
+    
+    0% {
+        left: -10px;
+    }
+    25% {
+        left: +10px;
+    }
+    50% {
+        left: -10px;
+    }
+    75% {
+        left: +10px;
+    }
+    100% {
+        left: -10px;
+    }
+}
+@-webkit-keyframes moveArrow {
+    0% {
+        left: -10px;
+    }
+    25% {
+        left: +10px;
+    }
+    50% {
+        left: -10px;
+    }
+    75% {
+        left: +10px;
+    }
+    100% {
+        left: -10px;
+    }
+}
+@-moz-keyframes moveArrow {
+    0% {
+        left: -10px;
+    }
+    25% {
+        left: +10px;
+    }
+    50% {
+        left: -10px;
+    }
+    75% {
+        left: +10px;
+    }
+    100% {
+        left: -10px;
+    }
+}
+@-o-keyframes moveArrow {
+    0% {
+        left: -10px;
+    }
+    25% {
+        left: +10px;
+    }
+    50% {
+        left: -10px;
+    }
+    75% {
+        left: +10px;
+    }
+    100% {
+        left: -10px;
+    }
+}
