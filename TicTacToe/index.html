@@ -1,33 +1,83 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,900|Raleway:400,900|Sniglet:400,800|Biryani:400,900|Catamaran:400,900' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,900|Raleway:400,900|Sniglet:400,800|Biryani:400,900|Catamaran:400,900'
+    rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Gloria+Hallelujah'
+    rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href="http://fonts.googleapis.com/css?
+family=Reenie+Beanie:regular" rel="stylesheet"
+    type="text/css">
 </head>
 
 <body>
-  <div class="all-content">
-    <h1>Tic-Tac-Toe</h1>
-    <div class="choice-bubble">
-      <div class="selection" id="X">X</div>
-      <div class="selection" id="O">O</div>
+    <div class="all-content">
+        <div class="intro">
+
+            <h1>MAN VS. MACHINE</h1>
+            <h2>Movable Tic-Tac-Toe</h2>
+
+            <div class="rules">
+                <ul>
+                    <li>Each player has 3 movable
+                        pieces that can be
+                        placed anywhere on
+                        the board.</li>
+                    <li>After that, a piece can
+                        only be moved to
+                        an empty adjacent
+                        square.
+                    </li>
+                    <li>A player can't pass;
+                        he/she has to move
+                        when it's his/her
+                        turn.
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="settings">
+            <i class="fa fa-long-arrow-right fa-5x arrow"></i>
+            <!--<span class="arrow">&#8595;</span>-->
+            <div class="difficulty">
+                <p>Difficulty</p>
+                <div class="note-top left"></div>
+                <div>1</div>
+                <div>2</div>
+                <div>3</div>
+                <div>4</div>
+            </div>
+
+            <div class="choice-bubble">
+                <div class="note-top right"></div>
+                <div class="selection" id="X">X</div>
+                <p>or</p>
+                <div class="selection" id="O">O</div>
+            </div>
+        </div>
+
+        <section>
+            <div class="grid">
+                <div class="row" id="1">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="row" id="2">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="row" id="3">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </section>
     </div>
-    <div class="grid">
-      <div class="row" id="1">
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-      <div class="row" id="2">
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-      <div class="row" id="3">
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-    </div>
-  </div>
 </body>
+
 </html>
