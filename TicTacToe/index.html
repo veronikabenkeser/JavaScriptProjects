@@ -2,55 +2,56 @@
 <html>
 
 <head>
-    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,900|Raleway:400,900|Sniglet:400,800|Biryani:400,900|Catamaran:400,900'
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.75">
+    <link href='https://fonts.googleapis.com/css?family=Changa+One|Fredericka+the+Great|Codystar:300'
     rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Gloria+Hallelujah'
-    rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link href="http://fonts.googleapis.com/css?
-family=Reenie+Beanie:regular" rel="stylesheet"
-    type="text/css">
 </head>
 
 <body>
     <div class="all-content">
-        <div class="intro">
-
-            <h1>MAN VS. MACHINE</h1>
-            <h2>Movable Tic-Tac-Toe</h2>
-
-            <div class="rules">
-                <ul>
-                    <li>Each player has 3 movable
-                        pieces that can be
-                        placed anywhere on
-                        the board.</li>
-                    <li>After that, a piece can
-                        only be moved to
-                        an empty adjacent
-                        square.
-                    </li>
-                    <li>A player can't pass;
-                        he/she has to move
-                        when it's his/her
-                        turn.
-                    </li>
-                </ul>
-            </div>
+        <div class='instructions hide'>
+            <ul>
+                <li>Initially, each player takes
+                    turns placing 3 movable
+                    pieces anywhere on the
+                    board.</li>
+                <li>After that, a piece can only
+                    be moved to an empty,
+                    adjacent square.</li>
+                <li>A player can't pass; he/she
+                    has to move when it's
+                    his/her turn.</li>
+            </ul>
+            <div class="close-div">GOT IT</div>
         </div>
-        <div class="settings">
-            <i class="fa fa-long-arrow-right fa-5x arrow"></i>
-            <!--<span class="arrow">&#8595;</span>-->
-            <div class="difficulty">
+        <div class="intro hide">
+
+            <div class="title">
+                <p>Movable</p>
+                <p>Tic-Tac-Toe</p>
+            </div>
+            <div class="intro-buttons">
+                <a href="#" class="myButton" id="rules-button">RULES</a>
+                <a href="#" class="myButton" id='start-button'>START</a>
+            </div>
+
+        </div>
+        <div class='setting1 hide'>
+            <div class="difficulty posted-note">
+
                 <p>Difficulty</p>
                 <div class="note-top left"></div>
-                <div>1</div>
-                <div>2</div>
-                <div>3</div>
-                <div>4</div>
-            </div>
+                <div class="level">
+                    <div>n00b</div>
+                    <div>expert</div>
+                    <div>grandmaster</div>
 
-            <div class="choice-bubble">
+                </div>
+            </div>
+        </div>
+        <div class='setting2 hide'>
+            <div class="choice-bubble posted-note">
                 <div class="note-top right"></div>
                 <div class="selection" id="X">X</div>
                 <p>or</p>
@@ -58,7 +59,7 @@ family=Reenie+Beanie:regular" rel="stylesheet"
             </div>
         </div>
 
-        <section>
+        <div class="playing-page hide">
             <div class="grid">
                 <div class="row" id="1">
                     <div></div>
@@ -73,10 +74,20 @@ family=Reenie+Beanie:regular" rel="stylesheet"
                 <div class="row" id="3">
                     <div></div>
                     <div></div>
+
                     <div></div>
                 </div>
+
             </div>
-        </section>
+
+        </div>
+
+        <div class="message"></div>
+        <div class="restart posted-note hide">
+            <p>Restart</p>
+            <div class="note-top"></div>
+        </div>
+
     </div>
 </body>
 
