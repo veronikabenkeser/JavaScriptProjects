@@ -1,6 +1,8 @@
-var TicTacToe = (function ($) {
+var TicTacToe = (function($) {
+  
     var _myWorker;
     var _availArr = [];
+  
     var board = [
         [1, 1],
         [1, 2],
@@ -14,94 +16,133 @@ var TicTacToe = (function ($) {
     ];
     var _humanMovesCount = 0;
     var _isHumanTurn = false;
+  
     var messages = {
         'human-win': 'You Win!',
         'computer-win': 'Computer wins!',
         'human-turn': 'Your turn!'
     };
 
-    var _logistics = {
-        init: function () {
+    var allPages = {
+        page0Class: "instructions",
+        page1Class: "intro",
+        page2Class: "setting1",
+        page3Class: "setting2",
+        page4Class: "playing-page"
 
+    };
+    var displayPage = function(classN) {
+
+        $('.all-content').children().each(function(index, child) {
+            if (!$(child).hasClass('hide')) {
+                $(child).addClass('hide');
+            }
+        });
+
+        $('.hide.' + classN).removeClass('hide');
+
+    };
+
+    var _logistics = {
+      
+        init: function() {
             _logistics.setLevel();
             _logistics.setPawns();
-
-
         },
-        displaySettings: function () {
-            $(".playing-page").addClass('hide');
-            $(".ai").addClass('hide');
-            $(".restart").addClass('hide');
-            $(".settings").removeClass('hide');
-        },
-        resetSettings: function () {
+
+        resetSettings: function() {
             _logistics.settings.level = 0,
                 _logistics.settings.humanPawn = "";
             _logistics.settings.computerPawn = "";
-            $(".difficulty").children().removeClass('selected');
+
+            $(".difficulty .level").children().removeClass('selected');
             $(".selection").removeClass('selected');
         },
+      
         settings: {
             level: 0,
             humanPawn: "",
             computerPawn: ""
         },
-        setLevel: function () {
-
+      
+        setLevel: function() {
             _logistics.settings.level = 0;
-            $(".difficulty").children().click(function () {
+            $(".difficulty .level").children().click(function() {
                 $('.difficulty div').removeClass('selected');
                 $(this).addClass('selected');
-
-                _logistics.settings.level = parseInt($(this).text(), 10);
-
-                if (_logistics.settings.humanPawn && _logistics.settings.level) {
-
-                    startGame(_logistics.settings.humanPawn);
+                if ($(this).text() === "n00b") {
+                    _logistics.settings.level = 1;
+                } else if ($(this).text() === "expert") {
+                    _logistics.settings.level = 2;
+                } else {
+                    _logistics.settings.level = 4;
                 }
+                displayPage(allPages.page3Class);
             });
 
         },
-        setPawns: function () {
+      
+        setPawns: function() {
             _logistics.settings.humanPawn = "";
             _logistics.settings.computerPawn = "";
-            $(".selection").click(function () {
+            $(".selection").click(function() {
                 $(this).addClass('selected');
                 var humanPawn = $(this).attr('id');
                 _logistics.settings.humanPawn = humanPawn;
                 _logistics.settings.computerPawn = (humanPawn === 'X') ? 'O' : 'X';
 
                 if (_logistics.settings.humanPawn && _logistics.settings.level) {
+                    displayPage(allPages.page4Class);
                     startGame(_logistics.settings.humanPawn);
                 }
+
             });
         }
     };
 
-    var initializeGame = function () {
+    var toggleRules = function() {
+        $('.' + allPages.page0Class).toggleClass('hide');
+        $('.' + allPages.page1Class).toggleClass('hide');
+    };
 
+    var setUpAllListeners = function() {
+      
+        $('#rules-button').click(function() {
+            toggleRules();
+        });
+        $('#start-button').click(function() {
+            displayPage(allPages.page2Class);
+        });
         _logistics.init();
+
+        $('.' + allPages.page0Class).click(function() {
+            toggleRules();
+        });
     };
 
     var _moves = {
-        getCoordinates: function ($obj) {
+      
+        getCoordinates: function($obj) {
 
             var row = $obj.closest(".row").attr('id');
-            var col = $obj.prevAll().size() + 1;
+            var col = $obj.prevAll().length + 1;
             row = parseInt(row, 10);
             col = parseInt(col, 10);
 
             return [row, col];
         },
-        markCells: function (row, col, colorClass) {
+      
+        markCells: function(row, col, colorClass) {
             $("#" + row + "").children().eq(parseInt(col, 10) - 1).addClass(colorClass);
 
         },
-        clearGrid: function () {
+      
+        clearGrid: function() {
             $(".grid div").children().empty();
             $(".row").children().removeClass('selected');
         },
-        recordMove: function (oldRow, oldCol, newRow, newCol, player) {
+      
+        recordMove: function(oldRow, oldCol, newRow, newCol, player) {
             _myWorker.postMessage({
                 messageType: 'record-move',
                 oldRow: oldRow,
@@ -116,13 +157,15 @@ var TicTacToe = (function ($) {
                 player: player
             });
         },
-        clearPreviouslySelItems: function () {
-
-            $('.highlighted').removeClass("highlighted");
+      
+        clearPreviouslySelItems: function() {
+            var highlightedName = 'highlighted' + _logistics.settings.humanPawn;
+            $('.' + highlightedName).removeClass(highlightedName);
 
             $('.oldSq').removeClass('oldSq');
         },
-        displayMove: function (oldRow, oldCol, newRow, newCol, player) {
+      
+        displayMove: function(oldRow, oldCol, newRow, newCol, player) {
 
             //Remove old pawn
             if (oldRow !== -1 && oldCol !== -1) {
@@ -130,18 +173,18 @@ var TicTacToe = (function ($) {
 
             }
             //Add new pawn
-
             $("#" + newRow + "").children().eq(newCol - 1).append(_logistics.settings[player + "Pawn"]);
         },
 
     };
 
     var _computerMoves = {
-        startComputerMove: function () {
+      
+        startComputerMove: function() {
             _isHumanTurn = false;
-            $('.moving-cog').removeClass('hide');
+          
             $(".message").empty();
-            $(".moving-cog").removeClass('hidden');
+
             _myWorker.postMessage({
                 messageType: 'make-computer-move'
             });
@@ -149,52 +192,53 @@ var TicTacToe = (function ($) {
     };
 
     var _humanMoves = {
-        startHumanMove: function (allAvailPosArr) {
+      
+        startHumanMove: function(allAvailPosArr) {
             _isHumanTurn = true;
-            $('.moving-cog').addClass('hide');
+
             $(".message").text(messages["human-turn"]);
 
             _humanMoves.setAvailPos(allAvailPosArr);
         },
 
-        findAdjacentSq: function ($selectedObj, allAvailPosArr) {
+        findAdjacentSq: function($selectedObj, allAvailPosArr) {
 
             var oldCoord = _moves.getCoordinates($selectedObj);
             var oldRow = oldCoord[0];
             var oldCol = oldCoord[1];
 
-
-            allAvailPosArr = allAvailPosArr.filter(function (oldAndNewPosArr) {
+            allAvailPosArr = allAvailPosArr.filter(function(oldAndNewPosArr) {
 
                 return oldAndNewPosArr[0].toString() === [oldRow, oldCol].toString();
             });
             return allAvailPosArr;
         },
 
-        highlightAdjacent: function (arr) {
+        highlightAdjacent: function(arr) {
 
-            arr.forEach(function (oldAndNewPosArr) {
+            arr.forEach(function(oldAndNewPosArr) {
 
                 var row = oldAndNewPosArr[1][0];
                 var col = oldAndNewPosArr[1][1];
 
-                _moves.markCells(row, col, "highlighted");
+                _moves.markCells(row, col, "highlighted" + _logistics.settings.humanPawn);
             });
 
         },
-        highlightAvailMoves: function ($obj, allAvailPosArr) {
+      
+        highlightAvailMoves: function($obj, allAvailPosArr) {
 
             if ($obj.text() === _logistics.settings.humanPawn) {
-
+              
                 var legalPosArr = _humanMoves.findAdjacentSq($obj, allAvailPosArr);
                 _humanMoves.highlightAdjacent(legalPosArr);
             }
         },
 
-        moveToSq: function ($selectedSq, $oldSq) {
+        moveToSq: function($selectedSq, $oldSq) {
 
             var newRow = $selectedSq.closest(".row").attr('id');
-            var newCol = $selectedSq.prevAll().size() + 1;
+            var newCol = $selectedSq.prevAll().length + 1;
             if ($oldSq) {
                 var oldCoord = _moves.getCoordinates($oldSq);
                 var oldRow = parseInt(oldCoord[0], 10);
@@ -205,37 +249,30 @@ var TicTacToe = (function ($) {
             }
         },
 
-        setAvailPos: function (allAvailPosArr) {
+        setAvailPos: function(allAvailPosArr) {
 
             _availArr = allAvailPosArr;
         },
 
-        getAvailPos: function () {
+        getAvailPos: function() {
             return _availArr;
         },
 
-        endHumanMove: function (oldRow, oldCol, newRow, newCol) {
-
+        endHumanMove: function(oldRow, oldCol, newRow, newCol) {
 
             _moves.recordMove(oldRow, oldCol, newRow, newCol, 'human');
-
             _humanMovesCount++;
             _moves.displayMove(oldRow, oldCol, newRow, newCol, 'human');
-
             _computerMoves.startComputerMove();
         },
 
     };
 
-    var gridListenerOff = function () {
-        $(".row div").off("click");
-    };
-
-    var gridListenerOn = function () {
-        $(".row div").on("click", function () {
-
+    var gridListenerOn = function() {
+        $(".row div").on("click", function() {
             if (_isHumanTurn) {
                 var $thisObj = $(this);
+              
                 if (_humanMovesCount >= 3 && $thisObj.text() === _logistics.settings.humanPawn) {
 
                     if (!$thisObj.hasClass('oldSq')) {
@@ -244,13 +281,14 @@ var TicTacToe = (function ($) {
                         var allAvailPosArr = _humanMoves.getAvailPos();
                         _humanMoves.highlightAvailMoves($thisObj, allAvailPosArr);
                         $thisObj.addClass('oldSq');
-
+                      
                     } else {
+                      
                         _moves.clearPreviouslySelItems();
                     }
 
                 } else if ($thisObj.text() === "" && _humanMovesCount >= 3) {
-                    if ($thisObj.hasClass('highlighted')) {
+                    if ($thisObj.hasClass('highlighted' + _logistics.settings.humanPawn)) {
                         //Move from old pos to new pos
                         _humanMoves.moveToSq($thisObj, $(".oldSq"));
                         _moves.clearPreviouslySelItems();
@@ -259,15 +297,19 @@ var TicTacToe = (function ($) {
                     _humanMoves.moveToSq($thisObj);
                 }
             }
+
         });
     };
 
-    var startGame = function (humanPawn) {
-
-        $('.intro').addClass('hide');
-        $('.settings').addClass('hide');
-        $(".playing-page").removeClass('hide');
+    var startGame = function(humanPawn) {
+      
+        $(".message").removeClass('hide');
         $(".ai").removeClass('hide');
+
+        _myWorker.postMessage({
+            messageType: 'start-game',
+            level: _logistics.settings.level
+        });
 
         if (humanPawn === 'X') {
             _humanMoves.startHumanMove(board);
@@ -276,88 +318,77 @@ var TicTacToe = (function ($) {
         }
     };
 
-    var _createWorker = function () {
+    var _createWorker = function() {
+      
         if (window.Worker) {
             _myWorker = new Worker("http://s.codepen.io/veronikabenkeser/pen/GpEyZN.js");
-
         }
 
-        _myWorker.onmessage = function (e) {
+        _myWorker.onmessage = function(e) {
             switch (e.data.messageType) {
-            case 'computer-move-done':
-                var oldRow = e.data.oldRow;
-                var oldCol = e.data.oldCol;
-                var newRow = e.data.newRow;
-                var newCol = e.data.newCol;
-                _moves.recordMove(oldRow, oldCol, newRow, newCol, 'computer');
-                $(".moving-cog").addClass('hide');
-                _moves.displayMove(oldRow, oldCol, newRow, newCol, 'computer');
+                
+                case 'computer-move-done':
+                
+                    var oldRow = e.data.oldRow;
+                    var oldCol = e.data.oldCol;
+                    var newRow = e.data.newRow;
+                    var newCol = e.data.newCol;
+                    _moves.recordMove(oldRow, oldCol, newRow, newCol, 'computer');
+                    _moves.displayMove(oldRow, oldCol, newRow, newCol, 'computer');
+                    break;
+
+                case 'game-over':
+            
+                    _gameOver.showWinner(e.data.winner);
+                    var winningPawns = e.data.pawns;
+                    winningPawns.forEach(function(pawn) {
+                        pawn = JSON.parse("[" + pawn + "]");
+                        var row = pawn[0];
+                        var col = pawn[1];
+                        _moves.markCells(row, col, "selected");
+                    });
+                    _gameOver.showEndGameMessage();
+                    break;
 
 
-
-                break;
-
-            case 'game-over':
-                gridListenerOff();
-                _gameOver.showWinner(e.data.winner);
-
-                var winningPawns = e.data.pawns;
-
-                winningPawns.forEach(function (pawn) {
-                    pawn = JSON.parse("[" + pawn + "]");
-                    var row = pawn[0];
-                    var col = pawn[1];
-                    _moves.markCells(row, col, "selected");
-                });
-                _gameOver.showEndGameMessage();
-
-                break;
-
-
-            case 'avail-human-pos':
-                var allAvailPosArr = e.data.allPos;
-
-                _humanMoves.startHumanMove(allAvailPosArr);
-                break;
+                case 'avail-human-pos':
+                    var allAvailPosArr = e.data.allPos;
+                    _humanMoves.startHumanMove(allAvailPosArr);
+                    break;
             };
         };
     };
 
-    var createWorker = function () {
+    var createWorker = function() {
         _createWorker();
     }
 
-    var playGame = function () {
-        displaySettings();
-        /* observeGameState(),*/
-        gridListenerOn();
-    };
-
-    var displaySettings = function () {
+    var displaySettings = function() {
         return _logistics.displaySettings();
     };
 
     var _gameOver = {
-        restartGame: function () {
-            $(".restart").click(function () {
-
+      
+        restartGame: function() {
+            $(".restart").click(function() {
                 _myWorker.postMessage({
                     messageType: 'restart'
                 });
                 _logistics.resetSettings();
-
                 _moves.clearGrid();
                 _humanMovesCount = 0;
-                playGame();
+                displayPage(allPages.page2Class);
 
             });
         },
-        showEndGameMessage: function () {
+      
+        showEndGameMessage: function() {
+
             $(".restart").removeClass('hide');
             _gameOver.restartGame();
         },
-        showWinner: function (winner) {
-            $('.moving-cog').addClass('hide');
+      
+        showWinner: function(winner) {
 
             if (winner === "computer") {
                 $(".message").text(messages["computer-win"]);
@@ -369,9 +400,15 @@ var TicTacToe = (function ($) {
         }
     };
 
+    var loadEverything = function() {
+        displayPage(allPages.page1Class);
+        setUpAllListeners();
+
+    };
+  
     return {
-        initializeGame: initializeGame(),
-        playGame: playGame(),
-        createWorker: createWorker()
+        intoAnimations: loadEverything(),
+        createWorker: createWorker(),
+        turnOnGrid: gridListenerOn()
     };
 })(jQuery);
